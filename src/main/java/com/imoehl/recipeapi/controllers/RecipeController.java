@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -38,6 +39,16 @@ public class RecipeController {
     public EntityModel<Recipe> getRecipe(@PathVariable Long id) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new RecipeNotFoundException(id));
 
+        return recipeAssembler.toModel(recipe);
+    }
+
+    @GetMapping("/recipes/random")
+    public EntityModel<Recipe> getRandomRecipe() {
+        if(recipeRepository.count() <= 0) {return null;}
+        Random rn = new Random();
+        int index = rn.nextInt(Math.toIntExact(recipeRepository.count())); // Our length will never be long enough for this to be a problem
+
+        Recipe recipe = recipeRepository.findAll().get(index);
         return recipeAssembler.toModel(recipe);
     }
 }
