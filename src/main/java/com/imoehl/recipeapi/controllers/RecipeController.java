@@ -1,6 +1,7 @@
 package com.imoehl.recipeapi.controllers;
 
 import com.imoehl.recipeapi.assemblers.RecipeAssembler;
+import com.imoehl.recipeapi.exceptions.RecipeNotFoundException;
 import com.imoehl.recipeapi.models.Recipe;
 import com.imoehl.recipeapi.repositories.RecipeRepository;
 import org.springframework.hateoas.CollectionModel;
@@ -35,7 +36,7 @@ public class RecipeController {
 
     @GetMapping("/recipes/{id}")
     public EntityModel<Recipe> getRecipe(@PathVariable Long id) {
-        Recipe recipe = recipeRepository.findById(id).orElseThrow(NullPointerException::new);
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new RecipeNotFoundException(id));
 
         return recipeAssembler.toModel(recipe);
     }
