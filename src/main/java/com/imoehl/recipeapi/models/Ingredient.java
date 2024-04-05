@@ -12,14 +12,23 @@ public class Ingredient {
     private @Id @GeneratedValue Long id;
     private String name;
     private String unit;
-    private double amount;
+    private Double amount;
+    private boolean optional;
 
     public Ingredient(){}
 
-    public Ingredient(String name, String unit, double amount){
+    public Ingredient(String name, String unit, double amount, boolean optional){
         this.name = name;
         this.unit = unit;
         this.amount = amount;
+        this.optional = optional;
+    }
+
+    public Ingredient(String name, boolean optional) {
+        this.name = name;
+        this.optional = optional;
+        this.unit = null;
+        this.amount = null;
     }
 
     public Long getId() {
@@ -46,12 +55,20 @@ public class Ingredient {
         this.unit = unit;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public boolean isOptional() {
+        return optional;
+    }
+
+    public void setOptional(boolean optional) {
+        this.optional = optional;
     }
 
     public String toString() {
@@ -63,11 +80,11 @@ public class Ingredient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ingredient that = (Ingredient) o;
-        return Double.compare(amount, that.amount) == 0 && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(unit, that.unit);
+        return Objects.equals(amount, that.amount) && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(unit, that.unit) && optional == that.optional;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, unit, amount);
+        return Objects.hash(id, name, unit, amount, optional);
     }
 }

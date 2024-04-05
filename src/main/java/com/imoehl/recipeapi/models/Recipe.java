@@ -1,12 +1,11 @@
 package com.imoehl.recipeapi.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Queue;
 
 @Entity
 public class Recipe {
@@ -14,19 +13,20 @@ public class Recipe {
     private @Id @GeneratedValue Long id;
     private String name;
     private StringBuilder story;
+    @JdbcTypeCode(SqlTypes.JSON)
     private List<Ingredient> ingredientList;
-    private Queue<String> directions;
+    private List<String> directions;
 
     public Recipe() {}
 
-    public Recipe(String name, StringBuilder story, List<Ingredient> ingredientList, Queue<String> directions) {
+    public Recipe(String name, StringBuilder story, List<Ingredient> ingredientList, List<String> directions) {
         this.name = name;
         this.story = story;
         this.ingredientList = ingredientList;
         this.directions = directions;
     }
 
-    public Recipe(String name, List<Ingredient> ingredientList, Queue<String> directions) {
+    public Recipe(String name, List<Ingredient> ingredientList, List<String> directions) {
         this.name = name;
         this.story = new StringBuilder();
         this.ingredientList = ingredientList;
@@ -65,11 +65,11 @@ public class Recipe {
         this.ingredientList = ingredientList;
     }
 
-    public Queue<String> getDirections() {
+    public List<String> getDirections() {
         return directions;
     }
 
-    public void setDirections(Queue<String> directions) {
+    public void setDirections(List<String> directions) {
         this.directions = directions;
     }
 
@@ -84,5 +84,10 @@ public class Recipe {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, story, ingredientList, directions);
+    }
+
+    @Override
+    public String toString() {
+        return "Ingredient{ id=" + this.id + ", name=" + name + " }";
     }
 }
