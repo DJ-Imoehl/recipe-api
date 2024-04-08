@@ -6,9 +6,9 @@ import com.imoehl.recipeapi.models.Recipe;
 import com.imoehl.recipeapi.repositories.RecipeRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Random;
@@ -50,5 +50,41 @@ public class RecipeController {
 
         Recipe recipe = recipeRepository.findAll().get(index);
         return recipeAssembler.toModel(recipe);
+    }
+
+    @PutMapping("/recipes/{id}")
+    public ResponseEntity<?> createEditRecipe(@PathVariable Long id, @RequestBody Recipe newRecipe) {
+        //Override recipe data or create new recipe
+        Recipe modifiedRecipe = recipeRepository
+                .findById(id)
+                .map(recipe -> {
+                    if(newRecipe.getName() != null) {
+                        recipe.setName(newRecipe.getName());
+                    }
+                    if(newRecipe.getStory() != null) {
+                        recipe.setStory(newRecipe.getStory());
+                    }
+                    if(newRecipe.getDirections() != null) {
+                        recipe.setDirections(newRecipe.getDirections());
+                    }
+                    if(newRecipe.getIngredientList() != null) {
+                        recipe.setIngredientList(newRecipe.getIngredientList());
+                    }
+                    return recipeRepository.save(recipe);
+                }).orElseGet(() -> {
+                    newRecipe.setId(id);
+                    return recipeRepository.save(newRecipe);
+                });
+        EntityModel<Recipe> model = recipeAssembler.toModel(modifiedRecipe);
+        return ResponseEntity
+                .created(model.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(model);
+    }
+
+    @DeleteMapping("/recipes/{id}")
+    public ResponseEntity<?> deleteRecipe(@PathVariable Long id) {
+        recipeRepository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
