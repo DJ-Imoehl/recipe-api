@@ -1,5 +1,7 @@
 package com.imoehl.recipeapi.config;
 
+import com.imoehl.recipeapi.models.Category;
+import com.imoehl.recipeapi.models.CategoryType;
 import com.imoehl.recipeapi.models.Ingredient;
 import com.imoehl.recipeapi.models.Recipe;
 import com.imoehl.recipeapi.repositories.RecipeRepository;
@@ -31,7 +33,11 @@ public class LoadDatabase {
                         new Ingredient("Salt", false),
                         new Ingredient("Pepper", true),
                         new Ingredient("Cheese", true)),
-                seDirections);
+                seDirections,
+                Arrays.asList(
+                        new Category(CategoryType.BREAKFAST, null),
+                        new Category(CategoryType.QUICK, null)
+                ));
 
         List<String> gcpDirections = Arrays.asList(
                 "Preheat oven to 425. Grease a half sheet pan.",
@@ -48,7 +54,8 @@ public class LoadDatabase {
                         new Ingredient("Olive Oil", "Tbsp", 4, false),
                         new Ingredient("Garlic", "cloves", 5, false),
                         new Ingredient("Thyme", "tsp", 2, true)),
-                gcpDirections);
+                gcpDirections,
+                Arrays.asList(new Category(CategoryType.DINNER, null)));
 
 
         return args -> {

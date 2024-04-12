@@ -17,20 +17,32 @@ public class Recipe {
     private List<Ingredient> ingredientList;
     private List<String> directions;
 
+    public List<Category> getCategorylist() {
+        return categorylist;
+    }
+
+    public void setCategorylist(List<Category> categorylist) {
+        this.categorylist = categorylist;
+    }
+
+    private List<Category> categorylist;
+
     public Recipe() {}
 
-    public Recipe(String name, StringBuilder story, List<Ingredient> ingredientList, List<String> directions) {
+    public Recipe(String name, StringBuilder story, List<Ingredient> ingredientList, List<String> directions, List<Category> categorylist) {
         this.name = name;
         this.story = story;
         this.ingredientList = ingredientList;
         this.directions = directions;
+        this.categorylist = categorylist;
     }
 
-    public Recipe(String name, List<Ingredient> ingredientList, List<String> directions) {
+    public Recipe(String name, List<Ingredient> ingredientList, List<String> directions, List<Category> categorylist) {
         this.name = name;
         this.story = new StringBuilder();
         this.ingredientList = ingredientList;
         this.directions = directions;
+        this.categorylist = categorylist;
     }
 
     public Long getId() {
