@@ -16,15 +16,7 @@ public class Recipe {
     @JdbcTypeCode(SqlTypes.JSON)
     private List<Ingredient> ingredientList;
     private List<String> directions;
-
-    public List<Category> getCategorylist() {
-        return categorylist;
-    }
-
-    public void setCategorylist(List<Category> categorylist) {
-        this.categorylist = categorylist;
-    }
-
+    @JdbcTypeCode(SqlTypes.JSON)
     private List<Category> categorylist;
 
     public Recipe() {}
@@ -85,17 +77,25 @@ public class Recipe {
         this.directions = directions;
     }
 
+    public List<Category> getCategorylist() {
+        return categorylist;
+    }
+
+    public void setCategorylist(List<Category> categorylist) {
+        this.categorylist = categorylist;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Recipe recipe = (Recipe) o;
-        return Objects.equals(id, recipe.id) && Objects.equals(name, recipe.name) && Objects.equals(story, recipe.story) && Objects.equals(ingredientList, recipe.ingredientList) && Objects.equals(directions, recipe.directions);
+        return Objects.equals(id, recipe.id) && Objects.equals(name, recipe.name) && Objects.equals(story, recipe.story) && Objects.equals(ingredientList, recipe.ingredientList) && Objects.equals(directions, recipe.directions) && Objects.equals(categorylist, recipe.categorylist);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, story, ingredientList, directions);
+        return Objects.hash(id, name, story, ingredientList, directions, categorylist);
     }
 
     @Override

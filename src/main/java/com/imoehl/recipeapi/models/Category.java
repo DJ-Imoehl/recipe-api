@@ -2,7 +2,6 @@ package com.imoehl.recipeapi.models;
 
 import java.util.Objects;
 
-;
 public class Category {
     private CategoryType name;
     private String photo;
