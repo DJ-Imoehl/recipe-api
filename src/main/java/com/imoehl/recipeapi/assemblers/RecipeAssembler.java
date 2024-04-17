@@ -2,7 +2,6 @@ package com.imoehl.recipeapi.assemblers;
 
 import com.imoehl.recipeapi.controllers.RecipeController;
 import com.imoehl.recipeapi.models.Recipe;
-import com.imoehl.recipeapi.repositories.RecipeRepository;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;

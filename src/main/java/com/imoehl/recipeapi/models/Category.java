@@ -1,8 +1,14 @@
 package com.imoehl.recipeapi.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
 import java.util.Objects;
 
+@Entity
 public class Category {
+    private @Id @GeneratedValue Long id;
     private CategoryType name;
     private String photo;
 
@@ -11,6 +17,13 @@ public class Category {
         this.photo = photo;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public CategoryType getName() {
         return name;
@@ -33,11 +46,11 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return name == category.name && Objects.equals(photo, category.photo);
+        return Objects.equals(id, category.id) && name == category.name && Objects.equals(photo, category.photo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, photo);
+        return Objects.hash(id, name, photo);
     }
 }
