@@ -1,7 +1,7 @@
 package com.imoehl.recipeapi.controllers;
 
 import com.imoehl.recipeapi.assemblers.CategoryAssembler;
-import com.imoehl.recipeapi.exceptions.RecipeNotFoundException;
+import com.imoehl.recipeapi.exceptions.CategoryNotFoundException;
 import com.imoehl.recipeapi.models.Category;
 import com.imoehl.recipeapi.repositories.CategoryRepository;
 import org.springframework.hateoas.CollectionModel;
@@ -36,9 +36,9 @@ public class CategoryController {
         return CollectionModel.of(categories, linkTo(methodOn(CategoryController.class).all()).withSelfRel());
     }
 
-    @GetMapping("/recipes/{id}")
+    @GetMapping("/categories/{id}")
     public EntityModel<Category> getCategory(@PathVariable Long id) {
-        Category recipe = categoryRepository.findById(id).orElseThrow(() -> new RecipeNotFoundException(id));
+        Category recipe = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
 
         return categoryAssembler.toModel(recipe);
     }
