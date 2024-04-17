@@ -4,6 +4,7 @@ import com.imoehl.recipeapi.models.Category;
 import com.imoehl.recipeapi.models.CategoryType;
 import com.imoehl.recipeapi.models.Ingredient;
 import com.imoehl.recipeapi.models.Recipe;
+import com.imoehl.recipeapi.repositories.CategoryRepository;
 import com.imoehl.recipeapi.repositories.RecipeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ public class LoadDatabase {
     public static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(RecipeRepository repository){
+    CommandLineRunner initDatabase(RecipeRepository recipeRepository, CategoryRepository categoryRepository){
         List<String> seDirections = Arrays.asList(
                 "Preheat pan to medium heat. Grease Pan.",
                 "Scramble Eggs in a bowl with a fork or whisk. Season with salt and pepper.",
@@ -34,10 +35,7 @@ public class LoadDatabase {
                         new Ingredient("Pepper", true),
                         new Ingredient("Cheese", true)),
                 seDirections,
-                Arrays.asList(
-                        new Category(CategoryType.BREAKFAST, null),
-                        new Category(CategoryType.QUICK, null)
-                ));
+                null);
 
         List<String> gcpDirections = Arrays.asList(
                 "Preheat oven to 425. Grease a half sheet pan.",
@@ -55,13 +53,22 @@ public class LoadDatabase {
                         new Ingredient("Garlic", "cloves", 5, false),
                         new Ingredient("Thyme", "tsp", 2, true)),
                 gcpDirections,
-                Arrays.asList(new Category(CategoryType.DINNER, null)));
+                null);
+        Category dinner = new Category(CategoryType.DINNER, null);
+        Category breakfast = new Category(CategoryType.BREAKFAST, null);
+        Category easy = new Category(CategoryType.QUICK, null);;
 
+        //scrambledEggs.setCategorylist(Arrays.asList(breakfast, easy));
+        //greekChickenPotatoes.setCategorylist(Arrays.asList(dinner));
 
         return args -> {
             log.info("-------------Loading Default Data-------------");
-            log.info("Loading " + repository.save(scrambledEggs));
-            log.info("Loading " + repository.save(greekChickenPotatoes));
+            log.info("Loading " + recipeRepository.save(scrambledEggs));
+            log.info("Loading " + recipeRepository.save(greekChickenPotatoes));
+            breakfast.setRecipeId(scrambledEggs.getId());
+            easy.setRecipeId(scrambledEggs.getId());
+            dinner.setRecipeId(greekChickenPotatoes.getId());
+            categoryRepository.saveAll(Arrays.asList(dinner, breakfast, easy));
         };
     }
 
