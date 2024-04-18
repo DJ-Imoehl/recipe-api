@@ -6,6 +6,7 @@ import org.hibernate.type.SqlTypes;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Recipe {
@@ -16,25 +17,29 @@ public class Recipe {
     @JdbcTypeCode(SqlTypes.JSON)
     private List<Ingredient> ingredientList;
     private List<String> directions;
+    @ManyToMany
     @JdbcTypeCode(SqlTypes.JSON)
-    private List<Category> categorylist;
+    @JoinTable(name="recipe_category",
+        joinColumns = @JoinColumn(name = "recipe_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
 
     public Recipe() {}
 
-    public Recipe(String name, StringBuilder story, List<Ingredient> ingredientList, List<String> directions, List<Category> categorylist) {
+    public Recipe(String name, StringBuilder story, List<Ingredient> ingredientList, List<String> directions, Set<Category> categorylist) {
         this.name = name;
         this.story = story;
         this.ingredientList = ingredientList;
         this.directions = directions;
-        this.categorylist = categorylist;
+        this.categories = categorylist;
     }
 
-    public Recipe(String name, List<Ingredient> ingredientList, List<String> directions, List<Category> categorylist) {
+    public Recipe(String name, List<Ingredient> ingredientList, List<String> directions, Set<Category> categorylist) {
         this.name = name;
         this.story = new StringBuilder();
         this.ingredientList = ingredientList;
         this.directions = directions;
-        this.categorylist = categorylist;
+        this.categories = categorylist;
     }
 
     public Long getId() {
@@ -77,12 +82,12 @@ public class Recipe {
         this.directions = directions;
     }
 
-    public List<Category> getCategorylist() {
-        return categorylist;
+    public Set<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategorylist(List<Category> categorylist) {
-        this.categorylist = categorylist;
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 
     @Override
@@ -90,12 +95,12 @@ public class Recipe {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Recipe recipe = (Recipe) o;
-        return Objects.equals(id, recipe.id) && Objects.equals(name, recipe.name) && Objects.equals(story, recipe.story) && Objects.equals(ingredientList, recipe.ingredientList) && Objects.equals(directions, recipe.directions) && Objects.equals(categorylist, recipe.categorylist);
+        return Objects.equals(id, recipe.id) && Objects.equals(name, recipe.name) && Objects.equals(story, recipe.story) && Objects.equals(ingredientList, recipe.ingredientList) && Objects.equals(directions, recipe.directions) && Objects.equals(categories, recipe.categories);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, story, ingredientList, directions, categorylist);
+        return Objects.hash(id, name, story, ingredientList, directions, categories);
     }
 
     @Override

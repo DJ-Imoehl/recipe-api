@@ -1,6 +1,7 @@
 package com.imoehl.recipeapi.assemblers;
 
 import com.imoehl.recipeapi.controllers.CategoryController;
+import com.imoehl.recipeapi.controllers.RecipeController;
 import com.imoehl.recipeapi.models.Category;
 
 import org.springframework.hateoas.EntityModel;
@@ -18,6 +19,7 @@ public class CategoryAssembler implements RepresentationModelAssembler<Category,
     public EntityModel<Category> toModel(Category entity) {
         return EntityModel.of(entity,
                 linkTo(methodOn(CategoryController.class).getCategory(entity.getId())).withSelfRel(),
-                linkTo(methodOn(CategoryController.class).all()).withRel("/categories"));
+                linkTo(methodOn(CategoryController.class).all()).withRel("/categories"),
+                linkTo(methodOn(CategoryController.class).getCategoryRecipes(entity.getId())).withRel("/recipes"));
     }
 }

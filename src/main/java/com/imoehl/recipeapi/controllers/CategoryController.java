@@ -1,8 +1,10 @@
 package com.imoehl.recipeapi.controllers;
 
 import com.imoehl.recipeapi.assemblers.CategoryAssembler;
+import com.imoehl.recipeapi.assemblers.RecipeAssembler;
 import com.imoehl.recipeapi.exceptions.CategoryNotFoundException;
 import com.imoehl.recipeapi.models.Category;
+import com.imoehl.recipeapi.models.Recipe;
 import com.imoehl.recipeapi.repositories.CategoryRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -22,10 +24,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class CategoryController {
     private final CategoryRepository categoryRepository;
     private final CategoryAssembler categoryAssembler;
+    private final RecipeAssembler recipeAssembler;
 
-    public CategoryController(CategoryRepository categoryRepository, CategoryAssembler categoryAssembler) {
+    public CategoryController(CategoryRepository categoryRepository, CategoryAssembler categoryAssembler, RecipeAssembler recipeAssembler) {
         this.categoryRepository = categoryRepository;
         this.categoryAssembler = categoryAssembler;
+        this.recipeAssembler = recipeAssembler;
     }
 
     @GetMapping("/categories")
@@ -38,8 +42,17 @@ public class CategoryController {
 
     @GetMapping("/categories/{id}")
     public EntityModel<Category> getCategory(@PathVariable Long id) {
-        Category recipe = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
 
-        return categoryAssembler.toModel(recipe);
+        return categoryAssembler.toModel(category);
+    }
+
+    @GetMapping("/categories/{id}/recipes")
+    public CollectionModel<EntityModel<Recipe>> getCategoryRecipes(@PathVariable Long id) {
+        List<EntityModel<Recipe>> recipes = categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException(id))
+                .getRecipes().stream().map(recipeAssembler::toModel).collect(Collectors.toList());
+
+        return CollectionModel.of(recipes, linkTo(methodOn(CategoryController.class).getCategoryRecipes(id)).withRel("/categories/" + id + "/recipes"));
     }
 }

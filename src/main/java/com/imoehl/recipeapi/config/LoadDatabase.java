@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Configuration
@@ -65,9 +67,11 @@ public class LoadDatabase {
             log.info("-------------Loading Default Data-------------");
             log.info("Loading " + recipeRepository.save(scrambledEggs));
             log.info("Loading " + recipeRepository.save(greekChickenPotatoes));
-            breakfast.setRecipeId(scrambledEggs.getId());
-            easy.setRecipeId(scrambledEggs.getId());
-            dinner.setRecipeId(greekChickenPotatoes.getId());
+            Set<Recipe> scrambledEggsSet = Stream.of(scrambledEggs).collect(Collectors.toSet());
+            Set<Recipe> chickenSet = Stream.of(greekChickenPotatoes).collect(Collectors.toSet());
+            breakfast.setRecipes(scrambledEggsSet);
+            easy.setRecipes(scrambledEggsSet);
+            dinner.setRecipes(chickenSet);
             categoryRepository.saveAll(Arrays.asList(dinner, breakfast, easy));
         };
     }

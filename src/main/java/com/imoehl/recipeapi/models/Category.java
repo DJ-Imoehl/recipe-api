@@ -1,16 +1,19 @@
 package com.imoehl.recipeapi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Category {
     private @Id @GeneratedValue Long id;
     private CategoryType name;
     private String photo;
-
-    private Long recipeId;
+    @ManyToMany
+    @JsonIgnore
+    private Set<Recipe> recipes;
 
     public Category() {}
 
@@ -43,12 +46,12 @@ public class Category {
         this.photo = photo;
     }
 
-    public Long getRecipeId() {
-        return recipeId;
+    public Set<Recipe> getRecipes() {
+        return recipes;
     }
 
-    public void setRecipeId(Long recipeId) {
-        this.recipeId = recipeId;
+    public void setRecipes(Set<Recipe> recipes) {
+        this.recipes = recipes;
     }
 
     @Override
@@ -57,11 +60,11 @@ public class Category {
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
         return Objects.equals(id, category.id) && name == category.name && Objects.equals(photo, category.photo)
-                && Objects.equals(recipeId, category.recipeId);
+                && Objects.equals(recipes, category.recipes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, photo, recipeId);
+        return Objects.hash(id, name, photo, recipes);
     }
 }
