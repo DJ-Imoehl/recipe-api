@@ -1,0 +1,89 @@
+{
+  "data": {
+    "recipes": [
+      {
+        "name": "Scrambled Eggs",
+        "story": "Classic scrambled eggs.",
+        "ingredientList": [
+          {
+            "name": "Eggs",
+            "unit": null,
+            "amount": null,
+            "optional": false
+          },
+          {
+            "name": "Salt",
+            "unit": null,
+            "amount": null,
+            "optional": false
+          },
+          {
+            "name": "Pepper",
+            "unit": null,
+            "amount": null,
+            "optional": true
+          },
+          {
+            "name": "Cheese",
+            "unit": null,
+            "amount": null,
+            "optional": true
+          }
+        ],
+        "directions": [
+          "Preheat pan to medium heat. Grease Pan.",
+          "Scramble Eggs in a bowl with a fork or whisk. Season with salt and pepper.",
+          "Pour eggs into pan. Cook until eggs solidify.",
+          "Turn off the heat and add optional cheese. Enjoy!"
+        ]
+      },
+      {
+        "name": "Greek Chicken and Potatoes",
+        "story": "From Foodwishes, this recipe is super lemon-y and garlic-y.",
+        "ingredientList": [
+          {
+            "name": "Chicken Thighs",
+            "unit": "lbs",
+            "amount": 1.5,
+            "optional": false
+          },
+          {
+            "name": "Russet Potatoes",
+            "unit": "count",
+            "amount": 2.0,
+            "optional": false
+          },
+          {
+            "name": "Olive Oil",
+            "unit": "Tbsp",
+            "amount": 4.0,
+            "optional": false
+          },
+          {
+            "name": "Garlic",
+            "unit": "cloves",
+            "amount": 5.0,
+            "optional": false
+          },
+          {
+            "name": "Thyme",
+            "unit": "tsp",
+            "amount": 2.0,
+            "optional": true
+          }
+        ],
+        "directions": [
+          "Preheat oven to 425. Grease a half sheet pan.",
+          "Cut potatoes into quarters. Place in bowl with chicken thighs.",
+          "Add olive oil, lemon zest, lemon juice, chopped garlic, and thyme to bowl. Mix well.",
+          "Put chicken and potatoes onto sheet pan, spread out for even cooking.",
+          "Bake for 45 minutes, checking the oven periodically.",
+          "Once chicken thighs hit 165, take out of oven. Let cool for 5 minutes and enjoy!"
+        ]
+      }
+    ],
+    "categories": [
+
+    ]
+  }
+}

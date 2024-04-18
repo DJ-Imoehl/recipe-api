@@ -1,5 +1,6 @@
 package com.imoehl.recipeapi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -17,7 +18,7 @@ public class Recipe {
     @JdbcTypeCode(SqlTypes.JSON)
     private List<Ingredient> ingredientList;
     private List<String> directions;
-    @ManyToMany
+    @JsonIgnore
     @JdbcTypeCode(SqlTypes.JSON)
     @JoinTable(name="recipe_category",
         joinColumns = @JoinColumn(name = "recipe_id"),
@@ -26,12 +27,12 @@ public class Recipe {
 
     public Recipe() {}
 
-    public Recipe(String name, StringBuilder story, List<Ingredient> ingredientList, List<String> directions, Set<Category> categorylist) {
+    public Recipe(String name, StringBuilder story, List<Ingredient> ingredientList, List<String> directions, Set<Category> categories) {
         this.name = name;
         this.story = story;
         this.ingredientList = ingredientList;
         this.directions = directions;
-        this.categories = categorylist;
+        this.categories = categories;
     }
 
     public Recipe(String name, List<Ingredient> ingredientList, List<String> directions, Set<Category> categorylist) {

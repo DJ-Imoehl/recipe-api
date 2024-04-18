@@ -2,6 +2,8 @@ package com.imoehl.recipeapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Objects;
 import java.util.Set;
@@ -11,8 +13,8 @@ public class Category {
     private @Id @GeneratedValue Long id;
     private CategoryType name;
     private String photo;
-    @ManyToMany
     @JsonIgnore
+    @JdbcTypeCode(SqlTypes.JSON)
     private Set<Recipe> recipes;
 
     public Category() {}

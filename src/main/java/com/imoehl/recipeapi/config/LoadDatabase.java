@@ -1,5 +1,8 @@
 package com.imoehl.recipeapi.config;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imoehl.recipeapi.models.Category;
 import com.imoehl.recipeapi.models.CategoryType;
 import com.imoehl.recipeapi.models.Ingredient;
@@ -12,6 +15,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,53 +27,42 @@ public class LoadDatabase {
 
     public static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
+    private List<Recipe> readJsonData() {
+        List<Recipe> recipes;
+        try {
+            byte[] jsonData = Files.readAllBytes(Paths.get("src\\main\\resources\\data.json"));
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(jsonData);
+            recipes = mapper.readValue(jsonNode.get("data").get("recipes").traverse(), new TypeReference<List<Recipe>>() {});
+            log.info("Loaded " + recipes.size() + " items into recipe list.");
+        } catch (Exception e) {
+            log.error("FILE READ ERROR - ERROR IMPORTING DATA FROM JSON FILE");
+            log.error(e.getMessage());
+            recipes = new ArrayList<>();
+        }
+        return recipes;
+    }
+
+
     @Bean
     CommandLineRunner initDatabase(RecipeRepository recipeRepository, CategoryRepository categoryRepository){
-        List<String> seDirections = Arrays.asList(
-                "Preheat pan to medium heat. Grease Pan.",
-                "Scramble Eggs in a bowl with a fork or whisk. Season with salt and pepper.",
-                "Pour eggs into pan. Cook until eggs solidify.",
-                "Turn off the heat and add optional cheese. Enjoy!");
-        Recipe scrambledEggs = new Recipe(
-                "Scrambled Eggs",
-                Arrays.asList(
-                        new Ingredient("Eggs", false),
-                        new Ingredient("Salt", false),
-                        new Ingredient("Pepper", true),
-                        new Ingredient("Cheese", true)),
-                seDirections,
-                null);
-
-        List<String> gcpDirections = Arrays.asList(
-                "Preheat oven to 425. Grease a half sheet pan.",
-                "Cut potatoes into quarters. Place in bowl with chicken thighs.",
-                "Add olive oil, lemon zest, lemon juice, garlic, and thyme to bowl. Mix well.",
-                "Put chicken and potatoes onto sheet pan, spread out for even cooking.",
-                "Bake for 45 minutes, checking the oven periodically.",
-                "Once chicken thighs hit 165, take out of oven. Let cool for 5 minutes and enjoy!");
-        Recipe greekChickenPotatoes = new Recipe(
-                "Greek Chicken and Potatoes",
-                Arrays.asList(
-                        new Ingredient("Chicken Thighs", "lbs", 1.5, false),
-                        new Ingredient("Russet Potatoes", "count", 2, false),
-                        new Ingredient("Olive Oil", "Tbsp", 4, false),
-                        new Ingredient("Garlic", "cloves", 5, false),
-                        new Ingredient("Thyme", "tsp", 2, true)),
-                gcpDirections,
-                null);
+        List<Recipe> recipes = readJsonData();
+        
         Category dinner = new Category(CategoryType.DINNER, null);
         Category breakfast = new Category(CategoryType.BREAKFAST, null);
         Category easy = new Category(CategoryType.QUICK, null);;
 
-        //scrambledEggs.setCategorylist(Arrays.asList(breakfast, easy));
-        //greekChickenPotatoes.setCategorylist(Arrays.asList(dinner));
-
         return args -> {
             log.info("-------------Loading Default Data-------------");
-            log.info("Loading " + recipeRepository.save(scrambledEggs));
-            log.info("Loading " + recipeRepository.save(greekChickenPotatoes));
-            Set<Recipe> scrambledEggsSet = Stream.of(scrambledEggs).collect(Collectors.toSet());
-            Set<Recipe> chickenSet = Stream.of(greekChickenPotatoes).collect(Collectors.toSet());
+            categoryRepository.saveAll(Arrays.asList(dinner, breakfast, easy));
+            recipes.get(0).setCategories(Stream.of(breakfast, easy).collect(Collectors.toSet()));
+            recipes.get(1).setCategories(Stream.of(dinner).collect(Collectors.toSet()));
+            for(Recipe recipe : recipes) {
+                log.info("Loading " + recipeRepository.save(recipe));
+            }
+            Set<Recipe> scrambledEggsSet = Stream.of(recipes.get(0)).collect(Collectors.toSet());
+            Set<Recipe> chickenSet = Stream.of(recipes.get(1)).collect(Collectors.toSet());
+
             breakfast.setRecipes(scrambledEggsSet);
             easy.setRecipes(scrambledEggsSet);
             dinner.setRecipes(chickenSet);
