@@ -1,7 +1,10 @@
 package com.imoehl.recipeapi.controllers;
 
+import com.imoehl.recipeapi.assemblers.CategoryAssembler;
 import com.imoehl.recipeapi.assemblers.RecipeAssembler;
+import com.imoehl.recipeapi.exceptions.CategoryNotFoundException;
 import com.imoehl.recipeapi.exceptions.RecipeNotFoundException;
+import com.imoehl.recipeapi.models.Category;
 import com.imoehl.recipeapi.models.Recipe;
 import com.imoehl.recipeapi.repositories.RecipeRepository;
 import org.springframework.hateoas.CollectionModel;
@@ -22,10 +25,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class RecipeController {
     private final RecipeRepository recipeRepository;
     private final RecipeAssembler recipeAssembler;
+    private final CategoryAssembler categoryAssembler;
 
-    public RecipeController(RecipeRepository recipeRepository, RecipeAssembler recipeAssembler) {
+    public RecipeController(RecipeRepository recipeRepository, RecipeAssembler recipeAssembler, CategoryAssembler categoryAssembler) {
         this.recipeRepository = recipeRepository;
         this.recipeAssembler = recipeAssembler;
+        this.categoryAssembler = categoryAssembler;
     }
 
     @GetMapping("/recipes")
@@ -87,5 +92,13 @@ public class RecipeController {
         recipeRepository.deleteById(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("recipes/{id}/categories")
+    public CollectionModel<EntityModel<Category>> getRecipeCategories(@PathVariable Long id) {
+        List<EntityModel<Category>> categories = recipeRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException(id))
+                .getCategories().stream().map(categoryAssembler::toModel).collect(Collectors.toList());
+        return CollectionModel.of(categories, linkTo(methodOn(CategoryController.class).all()).withSelfRel());
     }
 }

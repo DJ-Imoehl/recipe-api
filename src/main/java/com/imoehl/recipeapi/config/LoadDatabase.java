@@ -47,7 +47,7 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner initDatabase(RecipeRepository recipeRepository, CategoryRepository categoryRepository){
         List<Recipe> recipes = readJsonData();
-        
+
         Category dinner = new Category(CategoryType.DINNER, null);
         Category breakfast = new Category(CategoryType.BREAKFAST, null);
         Category easy = new Category(CategoryType.QUICK, null);;
