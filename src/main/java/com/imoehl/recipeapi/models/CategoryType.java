@@ -11,5 +11,6 @@ public enum CategoryType{
     PASTA,
     HEALTHY,
     MEAL_PREP,
-    SOUP
+    SOUP,
+    SNACK
 }

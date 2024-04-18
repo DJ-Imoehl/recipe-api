@@ -80,10 +80,133 @@
           "Bake for 45 minutes, checking the oven periodically.",
           "Once chicken thighs hit 165, take out of oven. Let cool for 5 minutes and enjoy!"
         ]
+      },
+      {
+        "name": "Banana Bread",
+        "story": "From Foodwishes, this is the best banana bread!",
+        "ingredientList": [
+          {
+            "name": "Flour",
+            "unit": "cups",
+            "amount": 2,
+            "optional": false
+          },
+          {
+            "name": "Baking Soda",
+            "unit": "tsp",
+            "amount": 1,
+            "optional": false
+          },
+          {
+            "name": "Baking Powder",
+            "unit": "tsp",
+            "amount": 1,
+            "optional": false
+          },
+          {
+            "name": "Salt",
+            "unit": "tsp",
+            "amount": 1,
+            "optional": false
+          },
+          {
+            "name": "Butter",
+            "unit": "cup",
+            "amount": 0.5,
+            "optional": false
+          },
+          {
+            "name": "Sugar",
+            "unit": "cup",
+            "amount": 1,
+            "optional": false
+          },
+          {
+            "name": "Bananas",
+            "unit": "count",
+            "amount": 3,
+            "optional": false
+          },
+          {
+            "name": "Eggs",
+            "unit": "count",
+            "amount": 2,
+            "optional": false
+          },
+          {
+            "name": "Vanilla",
+            "unit": "tsp",
+            "amount": 0.125,
+            "optional": false
+          },
+          {
+            "name": "Chocolate chips",
+            "unit": "cup",
+            "amount": 0.5,
+            "optional": false
+          }
+        ],
+        "directions": [
+          "Preheat oven to 325. Grease a loaf pan.",
+          "Mix flour, baking soda, baking powder, and salt in a bowl. Set aside.",
+          "In another bowl, cream butter and sugar together. Push to the side of the bowl and then add bananas.",
+          "Mash bananas thoroughly, then mix with the butter and sugar.",
+          "Add both eggs and vanilla to the wet ingredients and mix",
+          "Add half of the dry ingredients to the wet. Mix until almost no flour is visible, then repeat with the other half.",
+          "Add chocolate chips and mix.",
+          "Transfer to loaf pan and bake for 1 hour and 10 minutes, or until a toothpick comes out clean. Let cool and enjoy!"
+        ]
       }
     ],
     "categories": [
-
+      {
+        "name": "DESSERT",
+        "photo": null
+      },
+      {
+        "name": "DINNER",
+        "photo": null
+      },
+      {
+        "name": "BREAKFAST",
+        "photo": null
+      },
+      {
+        "name": "SNACK",
+        "photo": null
+      },
+      {
+        "name": "QUICK",
+        "photo": null
+      },
+      {
+        "name": "LUNCH",
+        "photo": null
+      },
+      {
+        "name": "SALAD",
+        "photo": null
+      },
+      {
+        "name": "VEGETARIAN",
+        "photo": null
+      },
+      {
+        "name": "PASTA",
+        "photo": null
+      },
+      {
+        "name": "HEALTHY",
+        "photo": null
+      },
+      {
+        "name": "MEAL_PREP",
+        "photo": null
+      },
+      {
+        "name": "SOUP",
+        "photo": null
+      }
     ]
   }
 }
